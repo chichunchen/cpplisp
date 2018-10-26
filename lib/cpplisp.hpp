@@ -16,19 +16,27 @@
 #include <stack>
 #include <cstdlib>
 #include <cassert>
+#include <regex>
 
 namespace chichun {
+
     class CPPLisp {
     public:
-        int evaluate(std::string expression) {
-            level = 0;
-            return eval(std::move(expression));
+        CPPLisp(std::string expression) : level(0) {
+            std::cout << eval(std::move(expression)) << std::endl;
         }
+
+        CPPLisp() : level(0) {
+        }
+
+        int eval(std::string expression);
 
     private:
         std::unordered_map<std::string, int> varTab;
 
         unsigned int level;
+
+        std::regex extractParam;
 
         int binOp(const std::string &expression, int startPos, const std::function<int(int, int)> &op);
 
@@ -51,9 +59,8 @@ namespace chichun {
         std::string getLeveledVar(std::string s, int l) {
             return s + "_" + std::to_string(l);
         }
-
-        int eval(std::string expression);
     };
+
 }
 
 
